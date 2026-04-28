@@ -560,6 +560,23 @@ function quadraticPoint(path, t) {
   };
 }
 
+function isMadeShot(path) {
+  const target = getHoopTarget();
+  const horizontalTolerance = courtImageReady ? su(88) : su(56);
+  const verticalTolerance = courtImageReady ? su(42) : su(32);
+
+  for (let i = 0; i <= 28; i += 1) {
+    const point = quadraticPoint(path, i / 28);
+    const dx = Math.abs(point.x - target.x);
+    const dy = Math.abs(point.y - target.y);
+    if (dx < horizontalTolerance && dy < verticalTolerance) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
 function drawAimPath() {
   if (!state.aiming && !state.ball) return;
   const path = state.ball ? state.ball.path : getShotPath();
@@ -692,9 +709,7 @@ function releaseShot(event) {
 
   const path = getShotPath();
   const target = getHoopTarget();
-  const missX = Math.abs(path.end.x - target.x);
-  const missY = Math.abs(path.end.y - target.y);
-  const made = missX < su(48) && missY < su(30);
+  const made = isMadeShot(path);
 
   if (!made) {
     path.end.x += Math.sign(path.end.x - target.x || 1) * su(110 + Math.random() * 80);
