@@ -694,7 +694,7 @@ function releaseShot(event) {
   const target = getHoopTarget();
   const missX = Math.abs(path.end.x - target.x);
   const missY = Math.abs(path.end.y - target.y);
-  const made = missX < su(48) && missY < su(30);
+  const made = missX < su(34) && missY < su(22);
 
   if (!made) {
     path.end.x += Math.sign(path.end.x - target.x || 1) * su(110 + Math.random() * 80);
